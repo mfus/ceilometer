@@ -41,5 +41,12 @@ setuptools.setup(
             'network_floatingip'
             '= ceilometer.compute.network:FloatingIPPollster',
             ],
+        'ceilometer.metering.processors': [
+                'billing_processor = ceilometer.components.processors:SimpleBillingProcessor',
+                'health_monitor_processor = ceilometer.components.processors:HealthMonitorProcessor'
+            ],
+        'ceilometer.publishers': [
+                'queue_publisher = ceilometer.components.queuepublisher:QueuePublisher'
+            ],
         },
     )
