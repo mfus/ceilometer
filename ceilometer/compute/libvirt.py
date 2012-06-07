@@ -20,26 +20,23 @@ import datetime
 
 from lxml import etree
 
-from nova import log as logging
 from nova import flags
 import nova.virt.connection
 
-from .. import counter
-from .. import plugin
+from ceilometer import log
+from ceilometer import counter
+from ceilometer import plugin
 
 
 FLAGS = flags.FLAGS
-# FIXME(dhellmann): We need to have the main program set up logging
-# correctly so messages from modules outside of the nova package
-# appear in the output.
-LOG = logging.getLogger('nova.' + __name__)
 
 MIB = 2 ** 20  # mebibytes
 
 
-def make_counter_from_instance(instance, type, volume):
+def make_counter_from_instance(instance, name, type, volume):
     return counter.Counter(
         source='?',
+        name=name,
         type=type,
         volume=volume,
         user_id=instance.user_id,
@@ -57,7 +54,7 @@ def make_counter_from_instance(instance, type, volume):
 
 class DiskIOPollster(plugin.PollsterBase):
 
-    LOG = logging.getLogger('nova.' + __name__ + '.diskio')
+    LOG = log.getLogger(__name__ + '.diskio')
 
     def _get_disks(self, conn, instance):
         """Get disks of an instance, only used to bypass bug#998089."""
@@ -91,14 +88,15 @@ class DiskIOPollster(plugin.PollsterBase):
                                   stats[2], stats[3], stats[4])
                     bytes += stats[1] + stats[3]  # combine read and write
                 yield make_counter_from_instance(instance,
-                                                 type='disk',
+                                                 name='disk',
+                                                 type='cumulative',
                                                  volume=bytes / MIB,
                                                  )
 
 
 class CPUPollster(plugin.PollsterBase):
 
-    LOG = logging.getLogger('nova.' + __name__ + '.cpu')
+    LOG = log.getLogger(__name__ + '.cpu')
 
     def get_counters(self, manager, context):
         conn = nova.virt.connection.get_connection(read_only=True)
@@ -112,7 +110,8 @@ class CPUPollster(plugin.PollsterBase):
                 self.LOG.info("CPUTIME USAGE: %s %d",
                               instance, cpu_info['cpu_time'])
                 yield make_counter_from_instance(instance,
-                                                 type='cpu',
+                                                 name='cpu',
+                                                 type='cumulative',
                                                  volume=cpu_info['cpu_time'],
                                                  )
             except Exception as err:
