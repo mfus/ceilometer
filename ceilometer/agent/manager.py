@@ -18,18 +18,15 @@
 
 import pkg_resources
 
-from nova import log as logging
 from nova import manager
 from nova import rpc
 
 from ceilometer import meter
 from ceilometer import cfg
+from ceilometer import log
 
 
-# FIXME(dhellmann): We need to have the main program set up logging
-# correctly so messages from modules outside of the nova package
-# appear in the output.
-LOG = logging.getLogger('nova.' + __name__)
+LOG = log.getLogger(__name__)
 
 COMPUTE_PLUGIN_NAMESPACE = 'ceilometer.poll.compute'
 PROCESSOR_PLUGIN_NAMESPACE = 'ceilometer.metering.processors'
@@ -119,7 +116,7 @@ class AgentManager(manager.Manager):
                         }
                     rpc.cast(context, cfg.CONF.metering_topic, msg)
                     rpc.cast(context,
-                             cfg.CONF.metering_topic + '.' + c.type,
+                             cfg.CONF.metering_topic + '.' + c.name,
                              msg)
             except Exception as err:
                 LOG.warning('Continuing after error from %s: %s', name, err)

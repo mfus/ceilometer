@@ -18,12 +18,12 @@
 
 from nova import context
 from nova import flags
-from nova import log as logging
 from nova import manager
 from nova import rpc as nova_rpc
 from nova.rpc import dispatcher as rpc_dispatcher
 
 from ceilometer import rpc
+from ceilometer import log
 from ceilometer import meter
 from ceilometer import cfg
 from ceilometer.collector import dispatcher
@@ -33,10 +33,7 @@ from ceilometer.collector import dispatcher
 import nova.notifier.rabbit_notifier
 
 FLAGS = flags.FLAGS
-# FIXME(dhellmann): We need to have the main program set up logging
-# correctly so messages from modules outside of the nova package
-# appear in the output.
-LOG = logging.getLogger('nova.' + __name__)
+LOG = log.getLogger(__name__)
 
 
 COMPUTE_COLLECTOR_NAMESPACE = 'ceilometer.collector.compute'
@@ -84,7 +81,7 @@ class CollectorManager(manager.Manager):
         ctxt = context.get_admin_context()
         nova_rpc.cast(ctxt, cfg.CONF.metering_topic, msg)
         nova_rpc.cast(ctxt,
-                      cfg.CONF.metering_topic + '.' + counter.type,
+                      cfg.CONF.metering_topic + '.' + counter.name,
                       msg)
 
     def record_metering_data(self, context, data):
