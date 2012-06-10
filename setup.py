@@ -49,5 +49,8 @@ setuptools.setup(
         'ceilometer.publishers': [
                 'queue_publisher = ceilometer.components.queuepublisher:QueuePublisher'
             ],
+        'ceilometer.storage': [
+            'log = ceilometer.storage.impl_log:LogStorage',
+            ],
         },
     )

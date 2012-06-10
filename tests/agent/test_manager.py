@@ -26,6 +26,7 @@ from nova import test
 
 from ceilometer.agent import manager
 from ceilometer import counter
+from ceilometer import publish
 
 
 def test_load_plugins():
@@ -57,13 +58,13 @@ class TestRunTasks(test.TestCase):
             self.counters.append((manager, context))
             return [self.test_data]
 
-    def faux_notify(self, context, topic, msg):
-        self.notifications.append((topic, msg))
+    def faux_notify(self, context, msg):
+        self.notifications.append(msg)
 
     def setUp(self):
         super(TestRunTasks, self).setUp()
         self.notifications = []
-        self.stubs.Set(rpc, 'cast', self.faux_notify)
+        self.stubs.Set(publish, 'publish_counter', self.faux_notify)
         self.mgr = manager.AgentManager()
         self.mgr.pollsters = [('test', self.Pollster())]
         self.ctx = context.RequestContext("user", "project")
@@ -78,23 +79,3 @@ class TestRunTasks(test.TestCase):
     def test_notify_topics(self):
         topics = [n[0] for n in self.notifications]
         assert topics == ['metering', 'metering.test']
-
-    def test_load_plugins(self):
-        mgr = manager.AgentManager()
-        mgr._load_plugins()
-        assert len(mgr.pollsters) == 3
-
-    def test_load_data_processors(self):
-        mgr = manager.AgentManager()
-        mgr._load_data_processors()
-        assert len(mgr.processors) == 2
-
-    def test_hook_data_processors_with_pollsters_and_publishers(self):
-        mgr = manager.AgentManager()
-        mgr._load_plugins()
-        mgr._load_data_processors()
-
-        mgr._hook_data_processors_with_plugins_and_publishers()
-
-        for name, processor in mgr.processors:
-            assert len(processor.pollsters) == len(mgr.pollsters), "Missing pollsters in %s. Current %d, expected 3" % (name, len(processor.pollsters))
