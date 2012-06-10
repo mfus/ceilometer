@@ -40,6 +40,7 @@ setuptools.setup(
             'libvirt_cpu = ceilometer.compute.libvirt:CPUPollster',
             'network_floatingip'
             '= ceilometer.compute.network:FloatingIPPollster',
+            'libvirt_network_traffic = ceilometer.compute.traffic:NetworkTrafficPollster',
             ],
         'ceilometer.storage': [
             'log = ceilometer.storage.impl_log:LogStorage',

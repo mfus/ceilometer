@@ -36,6 +36,25 @@ class HealthMonitorProcessor(MeteringDataProcessorBase):
         pass
 
     def _periodical_refresh(self):
+        """Periodical task.
+
+            Query known pollsters and analyse data.
+        """
+        # TODO: Should I define different intervals for each pollster?
+        for name, pollster in self.pollsters:
+            self._process_metering_data(name, pollster.get_counter())
+
+    def _process_metering_data(self, name, counter):
+
+        alert = self._check_constrains(name, counter)
+        if alert:
+            self._send_alert(alert)
+
+        # Pass data to local database? Count Average, Min/Max etc...
+
+
+    def _check_constrains(self, name, counter):
+        """Check constrains and generate(return) proper alert"""
         pass
 
     def _init_alerts(self):
