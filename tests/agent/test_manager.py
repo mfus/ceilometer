@@ -72,3 +72,30 @@ class TestRunTasks(test.TestCase):
 
     def test_message(self):
         assert self.Pollster.counters[0][1] is self.ctx
+
+    def test_notify(self):
+        assert len(self.notifications) == 2
+
+    def test_notify_topics(self):
+        topics = [n[0] for n in self.notifications]
+        assert topics == ['metering', 'metering.test']
+
+    def test_load_plugins(self):
+        mgr = manager.AgentManager()
+        mgr._load_plugins()
+        assert len(mgr.pollsters) == 3
+
+    def test_load_data_processors(self):
+        mgr = manager.AgentManager()
+        mgr._load_data_processors()
+        assert len(mgr.processors) == 2
+
+    def test_hook_data_processors_with_pollsters_and_publishers(self):
+        mgr = manager.AgentManager()
+        mgr._load_plugins()
+        mgr._load_data_processors()
+
+        mgr._hook_data_processors_with_plugins_and_publishers()
+
+        for name, processor in mgr.processors:
+            assert len(processor.pollsters) == len(mgr.pollsters), "Missing pollsters in %s. Current %d, expected 3" % (name, len(processor.pollsters))

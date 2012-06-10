@@ -43,6 +43,12 @@ setuptools.setup(
             ],
         'ceilometer.storage': [
             'log = ceilometer.storage.impl_log:LogStorage',
+        'ceilometer.metering.processors': [
+                'billing_processor = ceilometer.components.processors:SimpleBillingProcessor',
+                'health_monitor_processor = ceilometer.components.processors:HealthMonitorProcessor'
+            ],
+        'ceilometer.publishers': [
+                'queue_publisher = ceilometer.components.queuepublisher:QueuePublisher'
             ],
         },
     )
