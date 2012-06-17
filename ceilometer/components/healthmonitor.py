@@ -13,6 +13,10 @@ class HealthMonitor(MeteringDataMonitorBase):
     HEALTH_MONITOR_TOPIC = "health.topic"
 
     def __init__(self, context):
+        """Initialize HealthMonitor
+
+            :param context: pollsters and queuePublisher context
+        """
         super(HealthMonitor, self).__init__(context)
         self.publisher = QueuePublisher(self.context, {QueuePublisher.QUEUE_TOPIC_ARG: self.HEALTH_MONITOR_TOPIC})
 

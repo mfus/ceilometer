@@ -24,6 +24,18 @@ class MeteringDataMonitorBase(object):
     def __init__(self, context):
         self.context = context
 
+    @abc.abstractmethod
+    def filter_pollsters(self, pollster):
+        """Filter pollsters"""
+
+    def set_pollsters(self, pollsters):
+        """Set pollsters
+
+            :param pollsters: List with pollsters (name, pollster)
+        """
+
+        self.pollsters = filter(self.filter_pollsters, pollsters)
+
 
 class BillingMonitor(MeteringDataMonitorBase):
     """Simple billing processor. Pulls metering data from pollsters and sends them through publisher (ex. RabbitMq)

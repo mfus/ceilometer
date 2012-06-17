@@ -93,7 +93,8 @@ class AgentManager(manager.Manager):
             and publishers (objects which are publishing data to external sources)."""
 
         for name, monitor in self.monitors:
-            monitor.pollsters = self.pollsters
+            monitor.set_pollsters(self.pollsters)
+            LOG.debug("Passed pollsters to monitor:%s" , name)
 
     def periodic_tasks(self, context, raise_on_error=False):
         """Tasks to be run at a periodic interval."""
