@@ -18,6 +18,8 @@
 """Publish a counter using the preferred RPC mechanism.
 """
 
+import abc
+
 from nova import log as logging
 from nova import rpc
 
@@ -47,3 +49,14 @@ def publish_counter(context, counter):
     rpc.cast(context,
              cfg.CONF.metering_topic + '.' + counter.name,
              msg)
+
+
+class PublisherBase(object):
+    """Base class for plugins that support publishing data to external resource ex. Queue."""
+
+    __metaclass__ = abc.ABCMeta
+
+    @abc.abstractmethod
+    def publish_data(self, counter):
+        """Takes and processes metering data. It could publish it to external stream, write to file,
+        pass it to local daemon."""
