@@ -23,6 +23,7 @@ from nova.rpc import dispatcher as rpc_dispatcher
 
 from ceilometer import cfg
 from ceilometer import log
+from ceilometer import meter
 from ceilometer import publish
 from ceilometer import rpc
 from ceilometer.collector import dispatcher
@@ -81,11 +82,15 @@ class CollectorManager(manager.Manager):
         """
         #LOG.info('metering data: %r', data)
         LOG.info('metering data %s for %s: %s',
-                 data['event_type'],
+                 data['counter_name'],
                  data['resource_id'],
                  data['counter_volume'])
-        try:
-            self.storage_conn.record_metering_data(data)
-        except Exception as err:
-            LOG.error('Failed to record metering data: %s', err)
-            LOG.exception(err)
+        if not meter.verify_signature(data):
+            LOG.warning('message signature invalid, discarding message: %r',
+                        data)
+        else:
+            try:
+                self.storage_conn.record_metering_data(data)
+            except Exception as err:
+                LOG.error('Failed to record metering data: %s', err)
+                LOG.exception(err)
