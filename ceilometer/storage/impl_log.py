@@ -18,7 +18,7 @@
 """Simple logging storage backend.
 """
 
-from ceilometer import log
+from ceilometer.openstack.common import log
 from ceilometer.storage import base
 
 LOG = log.getLogger(__name__)
@@ -55,3 +55,42 @@ class Connection(base.Connection):
                  data['counter_name'],
                  data['resource_id'],
                  data['counter_volume'])
+
+    def get_users(self, source=None):
+        """Return an iterable of user id strings.
+
+        :param source: Optional source filter.
+        """
+
+    def get_projects(self, source=None):
+        """Return an iterable of project id strings.
+
+        :param source: Optional source filter.
+        """
+
+    def get_resources(self, user=None, project=None, source=None):
+        """Return an iterable of tuples containing resource ids and
+        the most recent version of the metadata for the resource.
+
+        :param user: The event owner.
+        :param source: Optional source filter.
+        """
+
+    def get_raw_events(self, event_filter):
+        """Return an iterable of event data.
+        """
+
+    def get_volume_sum(self, event_filter):
+        """Return the sum of the volume field for the events
+        described by the query parameters.
+        """
+
+    def get_volume_max(self, event_filter):
+        """Return the maximum of the volume field for the events
+        described by the query parameters.
+        """
+
+    def get_duration_sum(self, event_filter):
+        """Return the sum of time for the events described by the
+        query parameters.
+        """

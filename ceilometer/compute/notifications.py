@@ -18,8 +18,9 @@
 """Converters for producing compute counter messages from notification events.
 """
 
-from .. import counter
-from .. import plugin
+from ceilometer import counter
+from ceilometer import plugin
+from ceilometer.compute import instance
 
 
 def c1(body):
@@ -34,17 +35,7 @@ def c1(body):
         resource_id=body['payload']['instance_id'],
         timestamp=body['timestamp'],
         duration=0,
-        resource_metadata={
-            'display_name':
-                body['payload']['display_name'],
-            'instance_type':
-                body['payload']['instance_type_id'],
-            'image_ref_url': body['payload']['image_ref_url'],
-            'disk_gb': body['payload']['disk_gb'],
-            'memory_mb': body['payload']['memory_mb'],
-            'host': body['publisher_id'],
-            'event_type': body['event_type'],
-            },
+        resource_metadata=instance.get_metadata_from_event(body),
         )
 
 
