@@ -36,5 +36,6 @@ Counter = collections.namedtuple('Counter',
                                            'timestamp',
                                            'duration',
                                            'resource_metadata',
+                                           'alert'
                                            ])
                                  )

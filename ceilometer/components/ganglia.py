@@ -1,35 +1,8 @@
 # -*- encoding: utf-8 -*-
 __docformat__ = 'restructuredtext en'
 
-from ceilometer import plugin
-
-from jsonrpc2_zeromq import RPCNotificationServer
-from jsonrpc2_zeromq import RPCNotifierClient
-
-class JsonServer(RPCNotificationServer):
-
-    _update_configuration = False
-
-    def handle_update_stats_method(self, stats):
-        """ New stats from Ganglia
-        :param stats: new stats
-        :type stats: Dict
-        """
-        print str(stats)
-
-        if self._update_configuration:
-            print "Sent rrd_rrotdir"
-            return ["rrd_rootdir"]
-
-        return None
-
-    def handle_update_ganglia_configuration_method(self, configuration):
-        print str(configuration)
-        self._update_configuration = False
-        self.cfg = configuration
-
-    def update_ganglia_configuration(self):
-        self._update_configuration = True
+from ceilometer import plugin, reading
+from ceilometer.ganglia.jsonServer import JsonServer
 
 class GangliaPlugin(plugin.PollsterBase):
     """ Ganglia connector """
@@ -38,10 +11,12 @@ class GangliaPlugin(plugin.PollsterBase):
         pass
 
     def init_queue(self):
-        connection_address = "tcp://127.0.0.1:90000" #TODO move to confguration file
+
         self.receiver = JsonServer(connection_address)
+        self.receiver.handle_update_stats_method = self.received_stats_event
+
         #self.receiver.handle_update_ganglia_configuration_notification = self.update_ganglia_configuration
-        #self.receiver.handle_update_stats_method = self.received_stats_event
+
         try:
             self.receiver.start()
         except Exception as err:
@@ -61,10 +36,16 @@ class GangliaPlugin(plugin.PollsterBase):
 
     def received_stats_event(self, stats):
         """
-
         :param stats: Xml stats from Ganglia in Json array {"data" : "<xml data>"}
         :type stats: Dict
         """
+        try:
+            r = reading(stats)
+        except :
+            pass
+
+
+
         self.last_stats = stats.data
         self.notify_observer()
 
