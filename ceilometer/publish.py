@@ -18,18 +18,12 @@
 """Publish a counter using the preferred RPC mechanism.
 """
 
-import abc
-
-from nova import log as logging
-from nova import rpc
-
-from ceilometer import cfg
+from ceilometer.openstack.common import log
+from ceilometer.openstack.common import rpc
+from ceilometer.openstack.common import cfg
 from ceilometer import meter
 
-# FIXME(dhellmann): We need to have the main program set up logging
-# correctly so messages from modules outside of the nova package
-# appear in the output.
-LOG = logging.getLogger('nova.' + __name__)
+LOG = log.getLogger(__name__)
 
 
 def publish_counter(context, counter):

@@ -20,7 +20,7 @@
 
 import abc
 
-from ceilometer import log
+from ceilometer.openstack.common import log
 
 LOG = log.getLogger(__name__)
 
@@ -60,5 +60,70 @@ class Connection(object):
                      ceilometer.meter.meter_message_from_counter
         """
 
-    # FIXME(dhellmann): We will eventually need to add query methods
-    # for the API server to use, too.
+    @abc.abstractmethod
+    def get_users(self, source=None):
+        """Return an iterable of user id strings.
+
+        :param source: Optional source filter.
+        """
+
+    @abc.abstractmethod
+    def get_projects(self, source=None):
+        """Return an iterable of project id strings.
+
+        :param source: Optional source filter.
+        """
+
+    @abc.abstractmethod
+    def get_resources(self, user=None, project=None, source=None):
+        """Return an iterable of dictionaries containing resource information.
+
+        { 'resource_id': UUID of the resource,
+          'project_id': UUID of project owning the resource,
+          'user_id': UUID of user owning the resource,
+          'timestamp': UTC datetime of last update to the resource,
+          'metadata': most current metadata for the resource,
+          'meter': list of the meters reporting data for the resource,
+          }
+
+        :param user: Optional resource owner.
+        :param project: Optional resource owner.
+        :param source: Optional source filter.
+        """
+
+    @abc.abstractmethod
+    def get_raw_events(self, event_filter):
+        """Return an iterable of raw event data.
+        """
+
+    @abc.abstractmethod
+    def get_volume_sum(self, event_filter):
+        """Return the sum of the volume field for the events
+        described by the query parameters.
+
+        The filter must have a meter value set.
+
+        { 'resource_id': UUID string for the resource,
+          'value': The sum for the volume.
+          }
+        """
+
+    @abc.abstractmethod
+    def get_volume_max(self, event_filter):
+        """Return the maximum of the volume field for the events
+        described by the query parameters.
+
+        The filter must have a meter value set.
+
+        { 'resource_id': UUID string for the resource,
+          'value': The max for the volume.
+          }
+        """
+
+    @abc.abstractmethod
+    def get_duration_sum(self, event_filter):
+        """Return the sum of time for the events described by the
+        query parameters.
+
+        The filter must have a meter value set.
+        """

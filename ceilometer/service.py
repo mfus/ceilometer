@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
 # Copyright © 2012 eNovance <licensing@enovance.com>
@@ -16,6 +17,23 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from ceilometer.openstack.common.cfg import *
+from nova import flags
 
-CONF = ConfigOpts()
+from ceilometer.openstack.common import log
+from ceilometer.openstack.common import cfg
+
+cfg.CONF.register_opts([
+    cfg.IntOpt('periodic_interval',
+               default=60,
+               help='seconds between running periodic tasks')
+])
+
+
+def prepare_service(argv=[]):
+    cfg.CONF(argv[1:])
+    # FIXME(dhellmann): We must set up the nova.flags module in order
+    # to have the RPC and DB access work correctly because we are
+    # still using the Service object out of nova directly. We need to
+    # move that into openstack.common.
+    flags.FLAGS(argv[1:])
+    log.setup('ceilometer')

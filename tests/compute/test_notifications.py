@@ -19,6 +19,8 @@
 notification events.
 """
 
+import unittest
+
 from ceilometer.compute import notifications
 
 
@@ -53,7 +55,19 @@ INSTANCE_CREATE_END = {
                  u'state': u'active',
                  u'state_description': u'',
                  u'tenant_id': u'7c150a59fe714e6f9263774af9688f0e',
-                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2'},
+                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2',
+                 u'reservation_id': u'1e3ce043029547f1a61c1996d1a531a3',
+                 u'vcpus': 1,
+                 u'root_gb': 0,
+                 u'ephemeral_gb': 0,
+                 u'host': u'compute-host-name',
+                 u'availability_zone': u'1e3ce043029547f1a61c1996d1a531a4',
+                 u'os_type': u'linux?',
+                 u'architecture': u'x86',
+                 u'image_ref': u'UUID',
+                 u'kernel_id': u'1e3ce043029547f1a61c1996d1a531a5',
+                 u'ramdisk_id': u'1e3ce043029547f1a61c1996d1a531a6',
+                 },
     u'priority': u'INFO',
     u'publisher_id': u'compute.vagrant-precise',
     u'timestamp': u'2012-05-08 20:23:48.028195',
@@ -85,7 +99,19 @@ INSTANCE_DELETE_START = {
                  u'state': u'active',
                  u'state_description': u'deleting',
                  u'tenant_id': u'7c150a59fe714e6f9263774af9688f0e',
-                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2'},
+                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2',
+                 u'reservation_id': u'1e3ce043029547f1a61c1996d1a531a3',
+                 u'vcpus': 1,
+                 u'root_gb': 0,
+                 u'ephemeral_gb': 0,
+                 u'host': u'compute-host-name',
+                 u'availability_zone': u'1e3ce043029547f1a61c1996d1a531a4',
+                 u'os_type': u'linux?',
+                 u'architecture': u'x86',
+                 u'image_ref': u'UUID',
+                 u'kernel_id': u'1e3ce043029547f1a61c1996d1a531a5',
+                 u'ramdisk_id': u'1e3ce043029547f1a61c1996d1a531a6',
+                 },
     u'priority': u'INFO',
     u'publisher_id': u'compute.vagrant-precise',
     u'timestamp': u'2012-05-08 20:24:14.824743',
@@ -120,54 +146,71 @@ INSTANCE_EXISTS = {
                  u'state': u'active',
                  u'state_description': u'',
                  u'tenant_id': u'7c150a59fe714e6f9263774af9688f0e',
-                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2'},
+                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2',
+                 u'reservation_id': u'1e3ce043029547f1a61c1996d1a531a3',
+                 u'vcpus': 1,
+                 u'root_gb': 0,
+                 u'ephemeral_gb': 0,
+                 u'host': u'compute-host-name',
+                 u'availability_zone': u'1e3ce043029547f1a61c1996d1a531a4',
+                 u'os_type': u'linux?',
+                 u'architecture': u'x86',
+                 u'image_ref': u'UUID',
+                 u'kernel_id': u'1e3ce043029547f1a61c1996d1a531a5',
+                 u'ramdisk_id': u'1e3ce043029547f1a61c1996d1a531a6',
+                 },
     u'priority': u'INFO',
     u'publisher_id': u'compute.vagrant-precise',
     u'timestamp': u'2012-05-08 16:03:44.122481',
     }
 
 
-def compare(name, actual, expected):
-    assert actual == expected, name
+class TestNotifications(unittest.TestCase):
+    def test_process_notification(self):
+        info = notifications.InstanceNotifications.process_notification(INSTANCE_CREATE_END)[0]
+
+        for name, actual, expected in [
+            ('counter_name', info.name, 'instance'),
+            ('counter_type', info.type, 'cumulative'),
+            ('counter_volume', info.volume, 1),
+            ('timestamp', info.timestamp,
+             INSTANCE_CREATE_END['timestamp']),
+            ('resource_id', info.resource_id,
+             INSTANCE_CREATE_END['payload']['instance_id']),
+            ('display_name', info.resource_metadata['display_name'],
+             INSTANCE_CREATE_END['payload']['display_name']),
+            ('instance_type', info.resource_metadata['instance_type'],
+             INSTANCE_CREATE_END['payload']['instance_type_id']),
+            ('host', info.resource_metadata['host'],
+             INSTANCE_CREATE_END['publisher_id']),
+            ]:
+            yield compare, name, actual, expected
 
 
-def test_c1():
-    info = notifications.c1(INSTANCE_CREATE_END)
+    def test_instance_create(self):
+        ic = notifications.InstanceNotifications()
+        counters = ic.process_notification(INSTANCE_CREATE_END)
 
-    for name, actual, expected in [
-        ('counter_name', info.name, 'instance'),
-        ('counter_type', info.type, 'delta'),
-        ('counter_volume', info.volume, 1),
-        ('timestamp', info.timestamp,
-         INSTANCE_CREATE_END['timestamp']),
-        ('resource_id', info.resource_id,
-         INSTANCE_CREATE_END['payload']['instance_id']),
-        ('display_name', info.resource_metadata['display_name'],
-         INSTANCE_CREATE_END['payload']['display_name']),
-        ('instance_type', info.resource_metadata['instance_type'],
-         INSTANCE_CREATE_END['payload']['instance_type_id']),
-        ('host', info.resource_metadata['host'],
-         INSTANCE_CREATE_END['publisher_id']),
-        ]:
-        yield compare, name, actual, expected
+        self.assertEqual(len(counters), 2)
+
+        self.assertEqual(counters[0].name, 'instance')
+        self.assertEqual(counters[0].volume, 1)
+
+        self.assertEqual(counters[1].name, 'memory')
+        self.assertEqual(counters[1].volume, INSTANCE_CREATE_END['payload']['memory_mb'])
 
 
-def test_instance_create():
-    ic = notifications.InstanceNotifications()
-    counters = ic.process_notification(INSTANCE_CREATE_END)
-    assert len(counters) == 1
-    assert counters[0].name == 'instance'
+    def test_instance_exists(self):
+        ic = notifications.InstanceNotifications()
+        counters = ic.process_notification(INSTANCE_EXISTS)
+        self.assertEqual(len(counters), 2)
+        self.assertEqual(counters[0].name, 'instance')
+        self.assertEqual(counters[1].name, 'memory')
 
 
-def test_instance_exists():
-    ic = notifications.InstanceNotifications()
-    counters = ic.process_notification(INSTANCE_EXISTS)
-    assert len(counters) == 1
-    assert counters[0].name == 'instance'
-
-
-def test_instance_delete():
-    ic = notifications.InstanceNotifications()
-    counters = ic.process_notification(INSTANCE_DELETE_START)
-    assert len(counters) == 1
-    assert counters[0].name == 'instance'
+    def test_instance_delete(self):
+        ic = notifications.InstanceNotifications()
+        counters = ic.process_notification(INSTANCE_DELETE_START)
+        self.assertEqual(len(counters), 2)
+        self.assertEqual(counters[0].name, 'instance')
+        self.assertEqual(counters[1].name, 'memory')

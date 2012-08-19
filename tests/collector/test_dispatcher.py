@@ -60,7 +60,19 @@ TEST_NOTICE = {
                  u'state': u'active',
                  u'state_description': u'',
                  u'tenant_id': u'7c150a59fe714e6f9263774af9688f0e',
-                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2'},
+                 u'user_id': u'1e3ce043029547f1a61c1996d1a531a2',
+                 u'reservation_id': u'1e3ce043029547f1a61c1996d1a531a3',
+                 u'vcpus': 1,
+                 u'root_gb': 0,
+                 u'ephemeral_gb': 0,
+                 u'host': u'compute-host-name',
+                 u'availability_zone': u'1e3ce043029547f1a61c1996d1a531a4',
+                 u'os_type': u'linux?',
+                 u'architecture': u'x86',
+                 u'image_ref': u'UUID',
+                 u'kernel_id': u'1e3ce043029547f1a61c1996d1a531a5',
+                 u'ramdisk_id': u'1e3ce043029547f1a61c1996d1a531a6',
+                 },
     u'priority': u'INFO',
     u'publisher_id': u'compute.vagrant-precise',
     u'timestamp': u'2012-05-08 20:23:48.028195',
@@ -71,7 +83,7 @@ def test_notify():
     results = []
     d = StubDispatcher(None, lambda x: results.append(x))
     d.notify(TEST_NOTICE)
-    assert len(results) == 1
+    assert len(results) >= 1
     counter = results[0]
     assert counter.name == 'instance'
 
@@ -101,6 +113,7 @@ def test_notify_through_plugin():
         lambda x: results.append(x)
         )
     d.notify(TEST_NOTICE)
-    assert len(results) == 1
-    counter = results[0]
-    assert counter.name == 'instance'
+    assert len(results) >= 1
+    results_name = [ result.name for result in results ]
+    assert 'instance' in results_name
+    assert 'memory' in results_name

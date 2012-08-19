@@ -19,21 +19,26 @@
 from nova import context
 from nova import flags
 from nova import manager
-from nova.rpc import dispatcher as rpc_dispatcher
 
-from ceilometer import cfg
-from ceilometer import log
 from ceilometer import meter
 from ceilometer import publish
 from ceilometer import rpc
-from ceilometer.collector import dispatcher
 from ceilometer import storage
+from ceilometer.collector import dispatcher
+from ceilometer.openstack.common import cfg
+from ceilometer.openstack.common import log
+from ceilometer.openstack.common import timeutils
+from ceilometer.openstack.common.rpc import dispatcher as rpc_dispatcher
 
-# FIXME(dhellmann): There must be another way to do this.
-# Import rabbit_notifier to register notification_topics flag
-import nova.notifier.rabbit_notifier
+# FIXME(dhellmann): There must be another way to do this.  Import
+# rabbit_notifier to register notification_topics flag
+import ceilometer.openstack.common.notifier.rabbit_notifier
+try:
+    import nova.openstack.common.rpc as nova_rpc
+except ImportError:
+    # For Essex
+    import nova.rpc as nova_rpc
 
-FLAGS = flags.FLAGS
 LOG = log.getLogger(__name__)
 
 
@@ -43,7 +48,10 @@ COMPUTE_COLLECTOR_NAMESPACE = 'ceilometer.collector.compute'
 class CollectorManager(manager.Manager):
 
     def init_host(self):
-        self.connection = rpc.Connection(flags.FLAGS)
+        # Use the nova configuration flags to get
+        # a connection to the RPC mechanism nova
+        # is using.
+        self.connection = nova_rpc.create_connection()
 
         storage.register_opts(cfg.CONF)
         self.storage_engine = storage.get_engine(cfg.CONF)
@@ -58,7 +66,7 @@ class CollectorManager(manager.Manager):
         # invocation protocol (they do not include a "method"
         # parameter).
         self.connection.declare_topic_consumer(
-            topic='%s.info' % flags.FLAGS.notification_topics[0],
+            topic='%s.info' % cfg.CONF.notification_topics[0],
             callback=self.compute_handler.notify)
 
         # Set ourselves up as a separate worker for the metering data,
@@ -81,15 +89,23 @@ class CollectorManager(manager.Manager):
         cast from an agent.
         """
         #LOG.info('metering data: %r', data)
-        LOG.info('metering data %s for %s: %s',
+        LOG.info('metering data %s for %s @ %s: %s',
                  data['counter_name'],
                  data['resource_id'],
+                 data.get('timestamp', 'NO TIMESTAMP'),
                  data['counter_volume'])
         if not meter.verify_signature(data):
             LOG.warning('message signature invalid, discarding message: %r',
                         data)
         else:
             try:
+                # Convert the timestamp to a datetime instance.
+                # Storage engines are responsible for converting
+                # that value to something they can store.
+                if 'timestamp' in data:
+                    data['timestamp'] = timeutils.parse_isotime(
+                        data['timestamp'],
+                        )
                 self.storage_conn.record_metering_data(data)
             except Exception as err:
                 LOG.error('Failed to record metering data: %s', err)

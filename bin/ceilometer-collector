@@ -19,18 +19,15 @@
 
 import eventlet
 eventlet.monkey_patch()
-
 import sys
 
-from nova import flags
+from ceilometer.service import prepare_service
+from ceilometer.openstack.common import cfg
 from nova import service
-from nova import utils
-from ceilometer import log
+
 
 if __name__ == '__main__':
-    flags.parse_args(sys.argv)
-    log.setup()
-    utils.monkey_patch()
+    prepare_service(sys.argv)
     server = \
         service.Service.create(binary='ceilometer-collector',
                                topic='ceilometer.collector',
