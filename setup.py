@@ -31,7 +31,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=['bin']),
     include_package_data=True,
     test_suite='nose.collector',
-    scripts=['bin/ceilometer-agent', 'bin/ceilometer-collector'],
+    scripts=['bin/ceilometer-agent', 'bin/ceilometer-collector', 'bin/health-monitor-node.py'],
     py_modules=[],
     entry_points=textwrap.dedent("""
     [ceilometer.collector.compute]
@@ -46,29 +46,5 @@ setuptools.setup(
     log = ceilometer.storage.impl_log:LogStorage
     mongodb = ceilometer.storage.impl_mongodb:MongoDBStorage
     """),
-
-/*
     )
-
-
-    entry_points={
-        'ceilometer.collector.compute': [
-          'instance = ceilometer.compute.notifications:InstanceNotifications',
-            ],
-        'ceilometer.poll.compute': [
-            'libvirt_diskio = ceilometer.compute.libvirt:DiskIOPollster',
-            'libvirt_cpu = ceilometer.compute.libvirt:CPUPollster',
-            'network_floatingip'
-            '= ceilometer.compute.network:FloatingIPPollster',
-            'libvirt_network_traffic = ceilometer.compute.traffic:NetworkTrafficPollster',
-            ],
-        'ceilometer.monitor': [
-                'billing_monitor = ceilometer.components.monitors:BillingMonitor',
-                'health_monitor = ceilometer.components.healthmonitor:HealthMonitor'
-            ],
-        'ceilometer.storage': [
-            'log = ceilometer.storage.impl_log:LogStorage',
-            ],
-        },
-*/
 
