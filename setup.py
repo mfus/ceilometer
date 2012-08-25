@@ -31,7 +31,7 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=['bin']),
     include_package_data=True,
     test_suite='nose.collector',
-    scripts=['bin/ceilometer-agent', 'bin/ceilometer-collector', 'bin/health-monitor.py-node'],
+    scripts=['bin/ceilometer-agent', 'bin/ceilometer-collector', 'bin/health-monitor-node.py'],
     py_modules=[],
     entry_points=textwrap.dedent("""
     [ceilometer.collector.compute]
