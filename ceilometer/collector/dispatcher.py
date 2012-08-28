@@ -30,7 +30,7 @@ class NotificationDispatcher(object):
     """Manages invoking plugins to convert notification messages to counters.
     """
 
-    def __init__(self, plugin_namespace, publish_func):
+    def __init__(self, plugin_namespace,publish_func):
         self.plugin_namespace = plugin_namespace
         self.publish_func = publish_func
         self.handlers = {}
