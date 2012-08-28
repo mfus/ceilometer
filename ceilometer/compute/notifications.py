@@ -22,7 +22,6 @@ from ceilometer import counter
 from ceilometer import plugin
 from ceilometer.compute import instance
 
-
 class InstanceNotifications(plugin.NotificationBase):
     """Convert compute.instance.* notifications into Counters
     """

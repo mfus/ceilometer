@@ -1,10 +1,11 @@
 import abc
 
-from ceilometer import log
-from ceilometer import cfg
+from ceilometer.openstack.common import log
+from ceilometer.openstack.common import cfg
+from ceilometer.openstack.common import context
 from ceilometer.components.queuepublisher import QueuePublisher
 from ceilometer import publish
-from nova import context
+from ceilometer.openstack.common import context
 
 from ceilometer.components import rulesmanager
 

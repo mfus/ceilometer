@@ -31,7 +31,6 @@ COMPUTE_PLUGIN_NAMESPACE = 'ceilometer.poll.compute'
 class AgentManager(manager.AbstractManager):
 
     pollsters = []
-    publishers = []
 
     def init_host(self):
         self._load_plugins()
@@ -68,7 +67,7 @@ class AgentManager(manager.AbstractManager):
                 LOG.info('polling %s', name)
                 for c in pollster.get_counters(self, context):
                     LOG.info('COUNTER: %s', c)
-                    self.publish_counter(context, c)
+                    self.publish_counter(c)
             except Exception as err:
                 LOG.warning('Continuing after error from %s: %s', name, err)
                 LOG.exception(err)

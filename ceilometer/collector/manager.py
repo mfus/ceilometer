@@ -27,7 +27,6 @@ from ceilometer.openstack.common import cfg
 from ceilometer.openstack.common import log
 from ceilometer.openstack.common import timeutils
 from ceilometer.openstack.common.rpc import dispatcher as rpc_dispatcher
-
 # FIXME(dhellmann): There must be another way to do this.  Import
 # rabbit_notifier to register notification_topics flag
 import ceilometer.openstack.common.notifier.rabbit_notifier
@@ -46,16 +45,12 @@ COMPUTE_COLLECTOR_NAMESPACE = 'ceilometer.collector.compute'
 class CollectorManager(manager.AbstractManager):
 
     def init_host(self):
-<<<<<<< HEAD
         # Use the nova configuration flags to get
         # a connection to the RPC mechanism nova
         # is using.
         self.connection = nova_rpc.create_connection()
-=======
         self._load_monitors(self._load_monitors(manager.MONITOR_PLUGIN_NAMESPACE))
 
-        self.connection = rpc.Connection(flags.FLAGS)
->>>>>>> origin/feature/ganglia-plugin
 
         storage.register_opts(cfg.CONF)
         self.storage_engine = storage.get_engine(cfg.CONF)
