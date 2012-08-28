@@ -40,13 +40,14 @@ setuptools.setup(
             'libvirt_cpu = ceilometer.compute.libvirt:CPUPollster',
             'network_floatingip'
             '= ceilometer.compute.network:FloatingIPPollster',
+            'libvirt_network_traffic = ceilometer.compute.traffic:NetworkTrafficPollster',
             ],
-        'ceilometer.metering.processors': [
-                'billing_processor = ceilometer.components.processors:SimpleBillingProcessor',
-                'health_monitor_processor = ceilometer.components.processors:HealthMonitorProcessor'
+        'ceilometer.monitor': [
+                'billing_monitor = ceilometer.components.monitors:BillingMonitor',
+                'health_monitor = ceilometer.components.healthmonitor:HealthMonitor'
             ],
-        'ceilometer.publishers': [
-                'queue_publisher = ceilometer.components.queuepublisher:QueuePublisher'
+        'ceilometer.storage': [
+            'log = ceilometer.storage.impl_log:LogStorage',
             ],
         },
     )

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="aee88525-97e9-4b32-bb92-3dac9321dee8" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ceilometer.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/dist/ceilometer-0-py2.7.egg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/Makefile" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/openstack-common.conf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tools/pip-requires_essex" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/components/ganglia.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/components/healthmonitor.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/components/monitors.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/ganglia/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/ganglia/manager.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/ganglia/mockJsonServer.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/cfg.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/excutils.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/gettextutils.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/importutils.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/iniparser.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/jsonutils.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/local.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/amqp.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/common.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/dispatcher.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/impl_fake.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/impl_kombu.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/impl_qpid.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/impl_zmq.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/matchmaker.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/rpc/proxy.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/openstack/common/timeutils.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/publish.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/reading.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/base.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/impl_log.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/impl_mongodb.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/local/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ceilometer/storage/local/rrd.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/architecture.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/conf.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/configuration.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/areas.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/index.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/plugins.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/resources.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/source.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/contributing/user.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/glossary.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/index.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/install.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/doc/source/measurements.rst" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/collector/test_manager.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/test_get_engine.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/test_impl_log.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/test_impl_mongodb.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/test_register_opts.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/storage/test_rrd.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tests/test_publish.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/pip-requires" afterPath="$PROJECT_DIR$/tools/pip-requires" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/test-requires" afterPath="$PROJECT_DIR$/tools/test-requires" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitreview" afterPath="$PROJECT_DIR$/.gitreview" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/agent/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/agent/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/agent/manager.py" afterPath="$PROJECT_DIR$/ceilometer/agent/manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/cfg.py" afterPath="$PROJECT_DIR$/ceilometer/cfg.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/collector/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/collector/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/collector/dispatcher.py" afterPath="$PROJECT_DIR$/ceilometer/collector/dispatcher.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/collector/manager.py" afterPath="$PROJECT_DIR$/ceilometer/collector/manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/components/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/components/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/components/processors.py" afterPath="$PROJECT_DIR$/ceilometer/components/processors.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/components/publishers.py" afterPath="$PROJECT_DIR$/ceilometer/components/publishers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/components/queuepublisher.py" afterPath="$PROJECT_DIR$/ceilometer/components/queuepublisher.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/compute/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/compute/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/compute/libvirt.py" afterPath="$PROJECT_DIR$/ceilometer/compute/libvirt.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/compute/network.py" afterPath="$PROJECT_DIR$/ceilometer/compute/network.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/compute/notifications.py" afterPath="$PROJECT_DIR$/ceilometer/compute/notifications.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/compute/traffic.py" afterPath="$PROJECT_DIR$/ceilometer/compute/traffic.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/counter.py" afterPath="$PROJECT_DIR$/ceilometer/counter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/log.py" afterPath="$PROJECT_DIR$/ceilometer/log.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/meter.py" afterPath="$PROJECT_DIR$/ceilometer/meter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/plugin.py" afterPath="$PROJECT_DIR$/ceilometer/plugin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ceilometer/rpc/__init__.py" afterPath="$PROJECT_DIR$/ceilometer/rpc/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_tests.sh" afterPath="$PROJECT_DIR$/run_tests.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.cfg" afterPath="$PROJECT_DIR$/setup.cfg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/setup.py" afterPath="$PROJECT_DIR$/setup.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/agent/__init__.py" afterPath="$PROJECT_DIR$/tests/agent/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/agent/test_manager.py" afterPath="$PROJECT_DIR$/tests/agent/test_manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/collector/__init__.py" afterPath="$PROJECT_DIR$/tests/collector/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/collector/test_dispatcher.py" afterPath="$PROJECT_DIR$/tests/collector/test_dispatcher.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/components/__init__.py" afterPath="$PROJECT_DIR$/tests/components/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/components/test_queuepublisher.py" afterPath="$PROJECT_DIR$/tests/components/test_queuepublisher.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/compute/__init__.py" afterPath="$PROJECT_DIR$/tests/compute/__init__.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/compute/test_libvirt.py" afterPath="$PROJECT_DIR$/tests/compute/test_libvirt.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/compute/test_network.py" afterPath="$PROJECT_DIR$/tests/compute/test_network.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/compute/test_networkTrafficPollster.py" afterPath="$PROJECT_DIR$/tests/compute/test_networkTrafficPollster.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/compute/test_notifications.py" afterPath="$PROJECT_DIR$/tests/compute/test_notifications.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_log.py" afterPath="$PROJECT_DIR$/tests/test_log.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_meter.py" afterPath="$PROJECT_DIR$/tests/test_meter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/test_tools_notificationclient.py" afterPath="$PROJECT_DIR$/tests/test_tools_notificationclient.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/notificationclient.py" afterPath="$PROJECT_DIR$/tools/notificationclient.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tox.ini" afterPath="$PROJECT_DIR$/tox.ini" />
+    </list>
+    <ignored path="ceilometer.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ceilometer" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="reading.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ceilometer/reading.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="0" selection-start="725" selection-end="725" vertical-scroll-proportion="0.06651885">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="64" />
+    <option name="y" value="-4" />
+    <option name="width" value="1857" />
+    <option name="height" value="1085" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="2" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ceilometer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="ceilometer" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="aee88525-97e9-4b32-bb92-3dac9321dee8" name="Default" comment="" />
+      <created>1346155509217</created>
+      <updated>1346155509217</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="64" y="-4" width="1857" height="1085" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2531856" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ceilometer/reading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="0" selection-start="725" selection-end="725" vertical-scroll-proportion="0.06651885">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+

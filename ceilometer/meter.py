@@ -38,11 +38,22 @@ METER_OPTS = [
 cfg.CONF.register_opts(METER_OPTS)
 
 
+def recursive_keypairs(d):
+    """Generator that produces sequence of keypairs for nested dictionaries.
+    """
+    for name, value in sorted(d.iteritems()):
+        if isinstance(value, dict):
+            for subname, subvalue in recursive_keypairs(value):
+                yield ('%s:%s' % (name, subname), subvalue)
+        else:
+            yield name, value
+
+
 def compute_signature(message):
     """Return the signature for a message dictionary.
     """
     digest_maker = hmac.new(cfg.CONF.metering_secret, '', hashlib.sha256)
-    for name, value in sorted(message.iteritems()):
+    for name, value in recursive_keypairs(message):
         if name == 'message_signature':
             # Skip any existing signature value, which would not have
             # been part of the original message.
@@ -50,6 +61,15 @@ def compute_signature(message):
         digest_maker.update(name)
         digest_maker.update(unicode(value).encode('utf-8'))
     return digest_maker.hexdigest()
+
+
+def verify_signature(message):
+    """Check the signature in the message against the value computed
+    from the rest of the contents.
+    """
+    old_sig = message.get('message_signature')
+    new_sig = compute_signature(message)
+    return new_sig == old_sig
 
 
 def meter_message_from_counter(counter):
@@ -69,8 +89,6 @@ def meter_message_from_counter(counter):
            'counter_duration': counter.duration,
            'resource_metadata': counter.resource_metadata,
            'message_id': str(uuid.uuid1()),
-           # This field is used by the notification system.
-           'event_type': '%s.%s' % (cfg.CONF.metering_topic, counter.type),
            }
     msg['message_signature'] = compute_signature(msg)
     return msg
