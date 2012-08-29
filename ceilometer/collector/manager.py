@@ -16,10 +16,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from nova import context
 from nova import flags
-from ceilometer.components import manager
-from nova.rpc import dispatcher as rpc_dispatcher
+from nova import manager
+
 from ceilometer import meter
+from ceilometer import publish
 from ceilometer import rpc
 from ceilometer import storage
 from ceilometer.collector import dispatcher
@@ -43,19 +45,13 @@ LOG = log.getLogger(__name__)
 COMPUTE_COLLECTOR_NAMESPACE = 'ceilometer.collector.compute'
 
 
-class CollectorManager(manager.AbstractManager):
+class CollectorManager(manager.Manager):
 
     def init_host(self):
-<<<<<<< HEAD
         # Use the nova configuration flags to get
         # a connection to the RPC mechanism nova
         # is using.
         self.connection = nova_rpc.create_connection()
-=======
-        self._load_monitors(self._load_monitors(manager.MONITOR_PLUGIN_NAMESPACE))
-
-        self.connection = rpc.Connection(flags.FLAGS)
->>>>>>> origin/feature/ganglia-plugin
 
         storage.register_opts(cfg.CONF)
         self.storage_engine = storage.get_engine(cfg.CONF)
@@ -63,7 +59,7 @@ class CollectorManager(manager.AbstractManager):
 
         self.compute_handler = dispatcher.NotificationDispatcher(
             COMPUTE_COLLECTOR_NAMESPACE,
-            self.publish_counter,
+            self._publish_counter,
             )
         # FIXME(dhellmann): Should be using create_worker(), except
         # that notification messages do not conform to the RPC
@@ -82,6 +78,11 @@ class CollectorManager(manager.AbstractManager):
             )
 
         self.connection.consume_in_thread()
+
+    def _publish_counter(self, counter):
+        """Create a metering message for the counter and publish it."""
+        ctxt = context.get_admin_context()
+        publish.publish_counter(ctxt, counter)
 
     def record_metering_data(self, context, data):
         """This method is triggered when metering data is

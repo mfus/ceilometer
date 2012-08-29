@@ -3,10 +3,6 @@ import abc
 from ceilometer import log
 from ceilometer import cfg
 from ceilometer.components.queuepublisher import QueuePublisher
-from ceilometer import publish
-from nova import context
-
-from ceilometer.components import rulesmanager
 
 LOG = log.getLogger(__name__)
 
@@ -60,42 +56,5 @@ class BillingMonitor(MeteringDataMonitorBase):
             except Exception as err:
                 LOG.warning('Continuing after error from %s: %s', name, err)
                 LOG.exception(err)
-
-
-class SimpleMonitor(object):
-
-    def __init__(self):
-        self.topic = cfg.CONF.metering_topic
-
-    def publish_counter(self, counter):
-        """Create a metering message for the counter and publish it."""
-
-        ctx = context.get_admin_context()
-        publish.publish_counter(ctx, counter, self.topic)
-
-    def process(self, counter):
-        self.publish_counter(counter)
-
-
-class ValidationMonitor(object):
-
-    def __init__(self):
-        self.topic = 'Ceilometer'
-        self.rules = rulesmanager.RulesManager()
-
-    def publish_counter(self, counter):
-        """Create a metering message for the counter and publish it."""
-
-        ctx = context.get_admin_context()
-        publish.publish_counter(ctx, counter, self.topic)
-
-    def process(self, counter):
-        result = self.rules.validateAgainstRules(counter)
-
-        if result != rulesmanager.Valid:
-            self.publish_counter(counter)
-
-
-
 
 

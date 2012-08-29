@@ -26,7 +26,7 @@ from ceilometer import meter
 LOG = log.getLogger(__name__)
 
 
-def publish_counter(context, counter, topic):
+def publish_counter(context, counter):
     """Send a metering message for the data represented by the counter.
 
     :param context: Execution context from the service or RPC call
@@ -39,8 +39,10 @@ def publish_counter(context, counter, topic):
                  },
         }
     LOG.debug('PUBLISH: %s', str(msg))
-    rpc.cast(context, topic, msg)
-    rpc.cast(context, cfg.CONF.metering_topic + '.' + counter.name, msg)
+    rpc.cast(context, cfg.CONF.metering_topic, msg)
+    rpc.cast(context,
+             cfg.CONF.metering_topic + '.' + counter.name,
+             msg)
 
 
 class PublisherBase(object):

@@ -89,7 +89,6 @@ def meter_message_from_counter(counter):
            'counter_duration': counter.duration,
            'resource_metadata': counter.resource_metadata,
            'message_id': str(uuid.uuid1()),
-           'alert': counter.alert
            }
     msg['message_signature'] = compute_signature(msg)
     return msg
