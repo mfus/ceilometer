@@ -23,7 +23,7 @@ from ceilometer import plugin
 from ceilometer.compute import instance
 
 
-class InstanceNotifications(plugin.NotificationBase):
+class _Base(plugin.NotificationBase):
     """Convert compute.instance.* notifications into Counters
     """
 
@@ -34,28 +34,119 @@ class InstanceNotifications(plugin.NotificationBase):
                 'compute.instance.delete.start',
         ]
 
+
+class Instance(_Base):
+
     @staticmethod
     def process_notification(message):
+        metadata = instance.get_metadata_from_event(message)
         return [
             counter.Counter(source='?',
                             name='instance',
-                            type='cumulative',
+                            type='absolute',
                             volume=1,
                             user_id=message['payload']['user_id'],
                             project_id=message['payload']['tenant_id'],
                             resource_id=message['payload']['instance_id'],
                             timestamp=message['timestamp'],
                             duration=0,
-                            resource_metadata=instance.get_metadata_from_event(
-                                message)),
+                            resource_metadata=metadata,
+                            ),
+            ]
+
+
+class Memory(_Base):
+
+    @staticmethod
+    def process_notification(message):
+        return [
             counter.Counter(source='?',
                             name='memory',
                             type='absolute',
                             volume=message['payload']['memory_mb'],
                             user_id=message['payload']['user_id'],
                             project_id=message['payload']['tenant_id'],
-                        resource_id=message['payload']['instance_id'],
+                            resource_id=message['payload']['instance_id'],
                             timestamp=message['timestamp'],
                             duration=0,
                             resource_metadata={}),
-        ]
+            ]
+
+
+class VCpus(_Base):
+
+    @staticmethod
+    def process_notification(message):
+        return [
+            counter.Counter(source='?',
+                            name='vcpus',
+                            type='absolute',
+                            volume=message['payload']['vcpus'],
+                            user_id=message['payload']['user_id'],
+                            project_id=message['payload']['tenant_id'],
+                            resource_id=message['payload']['instance_id'],
+                            timestamp=message['timestamp'],
+                            duration=0,
+                            resource_metadata={}),
+            ]
+
+
+class RootDiskSize(_Base):
+
+    @staticmethod
+    def process_notification(message):
+        return [
+            counter.Counter(source='?',
+                            name='root_disk_size',
+                            type='absolute',
+                            volume=message['payload']['root_gb'],
+                            user_id=message['payload']['user_id'],
+                            project_id=message['payload']['tenant_id'],
+                            resource_id=message['payload']['instance_id'],
+                            timestamp=message['timestamp'],
+                            duration=0,
+                            resource_metadata={}),
+            ]
+
+
+class EphemeralDiskSize(_Base):
+
+    @staticmethod
+    def process_notification(message):
+        return [
+            counter.Counter(source='?',
+                            name='ephemeral_disk_size',
+                            type='absolute',
+                            volume=message['payload']['ephemeral_gb'],
+                            user_id=message['payload']['user_id'],
+                            project_id=message['payload']['tenant_id'],
+                            resource_id=message['payload']['instance_id'],
+                            timestamp=message['timestamp'],
+                            duration=0,
+                            resource_metadata={}),
+            ]
+
+
+class InstanceFlavor(_Base):
+
+    @staticmethod
+    def process_notification(message):
+        counters = []
+        metadata = instance.get_metadata_from_event(message)
+        instance_type = message.get('payload', {}).get('instance_type')
+        if instance_type:
+            counters.append(
+                counter.Counter(
+                    source='?',
+                    name='instance:%s' % instance_type,
+                    type='absolute',
+                    volume=1,
+                    user_id=message['payload']['user_id'],
+                    project_id=message['payload']['tenant_id'],
+                    resource_id=message['payload']['instance_id'],
+                    timestamp=message['timestamp'],
+                    duration=0,
+                    resource_metadata=metadata,
+                    )
+                )
+        return counters

@@ -31,16 +31,27 @@ setuptools.setup(
     packages=setuptools.find_packages(exclude=['bin']),
     include_package_data=True,
     test_suite='nose.collector',
-    scripts=['bin/ceilometer-agent', 'bin/ceilometer-collector', 'bin/health-monitor-node.py'],
+    setup_requires=['setuptools-git>=0.4'],
+    scripts=['bin/ceilometer-agent-compute',
+             'bin/ceilometer-agent-central',
+             'bin/ceilometer-collector',
+             'bin/health-monitor-node.py'],
     py_modules=[],
     entry_points=textwrap.dedent("""
     [ceilometer.collector.compute]
-    instance = ceilometer.compute.notifications:InstanceNotifications
+    instance = ceilometer.compute.notifications:Instance
+    instance_flavor = ceilometer.compute.notifications:InstanceFlavor
+    memory = ceilometer.compute.notifications:Memory
+    vcpus = ceilometer.compute.notifications:VCpus
+    root_disk_size = ceilometer.compute.notifications:RootDiskSize
+    ephemeral_disk_size = ceilometer.compute.notifications:EphemeralDiskSize
 
     [ceilometer.poll.compute]
     libvirt_diskio = ceilometer.compute.libvirt:DiskIOPollster
     libvirt_cpu = ceilometer.compute.libvirt:CPUPollster
-    network_floatingip = ceilometer.compute.network:FloatingIPPollster
+
+    [ceilometer.poll.central]
+    network_floatingip = ceilometer.network.floatingip:FloatingIPPollster
 
     [ceilometer.storage]
     log = ceilometer.storage.impl_log:LogStorage

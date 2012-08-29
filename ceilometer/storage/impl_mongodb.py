@@ -18,6 +18,7 @@
 """MongoDB storage backend
 """
 
+import copy
 import datetime
 
 from ceilometer.openstack.common import log
@@ -82,6 +83,20 @@ class MongoDBStorage(base.StorageEngine):
         return Connection(conf)
 
 
+def make_timestamp_range(start, end):
+    """Given two possible datetimes, create the query
+    document to find timestamps within that range
+    using $gte for the lower bound and $lt for the
+    upper bound.
+    """
+    ts_range = {}
+    if start:
+        ts_range['$gte'] = start
+    if end:
+        ts_range['$lt'] = end
+    return ts_range
+
+
 def make_query_from_filter(event_filter, require_meter=True):
     """Return a query dictionary based on the settings in the filter.
 
@@ -95,21 +110,16 @@ def make_query_from_filter(event_filter, require_meter=True):
         q['user_id'] = event_filter.user
     elif event_filter.project:
         q['project_id'] = event_filter.project
-    else:
-        # NOTE(dhellmann): The EventFilter class should have detected
-        # this case already, but just in case someone passes something
-        # that isn't actually an EventFilter instance...
-        raise RuntimeError('One of "user" or "project" is required')
 
     if event_filter.meter:
         q['counter_name'] = event_filter.meter
     elif require_meter:
         raise RuntimeError('Missing required meter specifier')
 
-    if event_filter.start:
-        q['timestamp'] = {'$gte': event_filter.start}
-    if event_filter.end:
-        q['timestamp'] = {'$lt': event_filter.end}
+    ts_range = make_timestamp_range(event_filter.start, event_filter.end)
+    if ts_range:
+        q['timestamp'] = ts_range
+
     if event_filter.resource:
         q['resource_id'] = event_filter.resource
     if event_filter.source:
@@ -230,6 +240,7 @@ class Connection(base.Connection):
                       # last updated.
                       'timestamp': timestamp,
                       'metadata': data['resource_metadata'],
+                      'source': data['source'],
                       },
              '$addToSet': {'meter': {'counter_name': data['counter_name'],
                                      'counter_type': data['counter_type'],
@@ -239,8 +250,11 @@ class Connection(base.Connection):
             upsert=True,
             )
 
-        # Record the raw data for the event
-        self.db.meter.insert(data)
+        # Record the raw data for the event. Use a copy so we do not
+        # modify a data structure owned by our caller (the driver adds
+        # a new key '_id').
+        record = copy.copy(data)
+        self.db.meter.insert(record)
         return
 
     def get_users(self, source=None):
@@ -251,7 +265,7 @@ class Connection(base.Connection):
         q = {}
         if source is not None:
             q['source'] = source
-        return self.db.user.distinct('_id')
+        return sorted(self.db.user.find(q).distinct('_id'))
 
     def get_projects(self, source=None):
         """Return an iterable of project id strings.
@@ -261,9 +275,10 @@ class Connection(base.Connection):
         q = {}
         if source is not None:
             q['source'] = source
-        return self.db.project.distinct('_id')
+        return sorted(self.db.project.find(q).distinct('_id'))
 
-    def get_resources(self, user=None, project=None, source=None):
+    def get_resources(self, user=None, project=None, source=None,
+                      start_timestamp=None, end_timestamp=None):
         """Return an iterable of dictionaries containing resource information.
 
         { 'resource_id': UUID of the resource,
@@ -274,9 +289,11 @@ class Connection(base.Connection):
           'meter': list of the meters reporting data for the resource,
           }
 
-        :param user: Optional resource owner.
-        :param project: Optional resource owner.
+        :param user: Optional ID for user that owns the resource.
+        :param project: Optional ID for project that owns the resource.
         :param source: Optional source filter.
+        :param start_timestamp: Optional modified timestamp start range.
+        :param end_timestamp: Optional modified timestamp end range.
         """
         q = {}
         if user is not None:
@@ -285,19 +302,42 @@ class Connection(base.Connection):
             q['project_id'] = project
         if source is not None:
             q['source'] = source
+        # FIXME(dhellmann): This may not perform very well,
+        # but doing any better will require changing the database
+        # schema and that will need more thought than I have time
+        # to put into it today.
+        if start_timestamp or end_timestamp:
+            # Look for resources matching the above criteria and with
+            # events in the time range we care about, then change the
+            # resource query to return just those resources by id.
+            ts_range = make_timestamp_range(start_timestamp, end_timestamp)
+            if ts_range:
+                q['timestamp'] = ts_range
+            resource_ids = self.db.meter.find(q).distinct('resource_id')
+            # Overwrite the query to just filter on the ids
+            # we have discovered to be interesting.
+            q = {'_id': {'$in': resource_ids}}
         for resource in self.db.resource.find(q):
             r = {}
             r.update(resource)
+            # Replace the '_id' key with 'resource_id' to meet the
+            # caller's expectations.
             r['resource_id'] = r['_id']
             del r['_id']
             yield r
 
     def get_raw_events(self, event_filter):
-        """Return an iterable of event data.
+        """Return an iterable of raw event data as created by
+        :func:`ceilometer.meter.meter_message_from_counter`.
         """
         q = make_query_from_filter(event_filter, require_meter=False)
         events = self.db.meter.find(q)
-        return events
+        for e in events:
+            # Remove the ObjectId generated by the database when
+            # the event was inserted. It is an implementation
+            # detail that should not leak outside of the driver.
+            del e['_id']
+            yield e
 
     def get_volume_sum(self, event_filter):
         """Return the sum of the volume field for the events

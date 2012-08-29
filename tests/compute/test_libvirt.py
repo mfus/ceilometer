@@ -19,45 +19,56 @@
 """Tests for manager.
 """
 
+import unittest
+
 try:
-    import libvirt
+    import libvirt as ignored_libvirt
 except ImportError:
     libvirt_missing = True
 else:
     libvirt_missing = False
 
-from nova import context
+import mock
+
 from nova import flags
-from nova import test
-from nova import db
 
 from ceilometer.compute import libvirt
-from ceilometer.agent import manager
+from ceilometer.compute import manager
+from ceilometer.tests import skip
 
 
-class TestDiskIOPollster(test.TestCase):
+class TestDiskIOPollster(unittest.TestCase):
 
     def setUp(self):
-        self.context = context.RequestContext('admin', 'admin', is_admin=True)
         self.manager = manager.AgentManager()
         self.pollster = libvirt.DiskIOPollster()
         super(TestDiskIOPollster, self).setUp()
-
-    @test.skip_if(libvirt_missing, 'Test requires libvirt')
-    def test_fetch_diskio(self):
-        list(self.pollster.get_counters(self.manager, self.context))
-
-    @test.skip_if(libvirt_missing, 'Test requires libvirt')
-    def test_fetch_diskio_with_libvirt_non_existent_instance(self):
+        self.instance = mock.MagicMock()
+        self.instance.name = 'instance-00000001'
+        self.instance.id = 1
         flags.FLAGS.compute_driver = 'libvirt.LibvirtDriver'
+        flags.FLAGS.connection_type = 'libvirt'
 
-        instance = db.instance_create(self.context, {})
+    @skip.skip_if(libvirt_missing, 'Test requires libvirt')
+    def test_fetch_diskio(self):
+        list(self.pollster.get_counters(self.manager, self.instance))
+        #assert counters
+        # FIXME(dhellmann): The CI environment doesn't produce
+        # a response when the fake driver asks for the disks, so
+        # we do not get any counters in response.
 
-        self.mox.StubOutWithMock(self.manager.db, 'instance_get_all_by_host')
-        self.manager.db.instance_get_all_by_host(self.context,
-                                                 self.manager.host,
-                                                 ).AndReturn([instance])
+    @skip.skip_if(libvirt_missing, 'Test requires libvirt')
+    def test_fetch_diskio_not_libvirt(self):
+        flags.FLAGS.compute_driver = 'fake.FakeDriver'
+        flags.FLAGS.connection_type = 'fake'
+        counters = list(self.pollster.get_counters(self.manager,
+                                                   self.instance))
+        assert not counters
 
-        self.mox.ReplayAll()
-
-        list(self.pollster.get_counters(self.manager, self.context))
+    @skip.skip_if(libvirt_missing, 'Test requires libvirt')
+    def test_fetch_diskio_with_libvirt_non_existent_instance(self):
+        instance = mock.MagicMock()
+        instance.name = 'instance-00000999'
+        instance.id = 999
+        counters = list(self.pollster.get_counters(self.manager, instance))
+        assert not counters

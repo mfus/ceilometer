@@ -26,8 +26,7 @@ from ceilometer import publish
 
 LOG = log.getLogger(__name__)
 
-COMPUTE_PLUGIN_NAMESPACE = 'ceilometer.poll.compute'
-MONITOR_PLUGIN_NAMESPACE = 'ceilometer.monitor'
+PLUGIN_NAMESPACE = 'ceilometer.poll.central'
 
 class AgentManager(manager.Manager):
 
@@ -43,7 +42,7 @@ class AgentManager(manager.Manager):
 
     def _load_plugins(self):
         self.pollsters = []
-        for ep in pkg_resources.iter_entry_points(COMPUTE_PLUGIN_NAMESPACE):
+        for ep in pkg_resources.iter_entry_points(PLUGIN_NAMESPACE):
             try:
                 plugin_class = ep.load()
                 plugin = plugin_class()
@@ -54,14 +53,14 @@ class AgentManager(manager.Manager):
                 # it should be enabled.
                 self.pollsters.append((ep.name, plugin))
                 LOG.info('loaded pollster %s:%s',
-                         COMPUTE_PLUGIN_NAMESPACE, ep.name)
+                         PLUGIN_NAMESPACE, ep.name)
             except Exception as err:
                 LOG.warning('Failed to load pollster %s:%s',
                             ep.name, err)
                 LOG.exception(err)
         if not self.pollsters:
             LOG.warning('Failed to load any pollsters for %s',
-                        COMPUTE_PLUGIN_NAMESPACE)
+                        PLUGIN_NAMESPACE)
         return
 
     def _load_monitors(self):

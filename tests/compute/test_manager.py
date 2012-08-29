@@ -20,12 +20,10 @@
 
 import datetime
 
-from nova import context
-from nova import test
-
-from ceilometer.agent import manager
+from ceilometer.compute import manager
 from ceilometer import counter
 from ceilometer import publish
+from ceilometer.tests import base
 
 
 def test_load_plugins():
@@ -35,7 +33,7 @@ def test_load_plugins():
     return
 
 
-class TestRunTasks(test.TestCase):
+class TestRunTasks(base.TestCase):
 
     class Pollster:
         counters = []
@@ -53,8 +51,8 @@ class TestRunTasks(test.TestCase):
                                },
             )
 
-        def get_counters(self, manager, context):
-            self.counters.append((manager, context))
+        def get_counters(self, manager, instance):
+            self.counters.append((manager, instance))
             return [self.test_data]
 
     def faux_notify(self, context, msg):
@@ -66,36 +64,23 @@ class TestRunTasks(test.TestCase):
         self.stubs.Set(publish, 'publish_counter', self.faux_notify)
         self.mgr = manager.AgentManager()
         self.mgr.pollsters = [('test', self.Pollster())]
-        self.ctx = context.RequestContext("user", "project")
-        self.mgr.periodic_tasks(self.ctx)
+        # Set up a fake instance value to be returned by
+        # instance_get_all_by_host() so when the manager gets the list
+        # of instances to poll we can control the results.
+        self.instance = 'faux instance'
+        self.mox.StubOutWithMock(self.mgr.db, 'instance_get_all_by_host')
+        self.mgr.db.instance_get_all_by_host(
+            None,
+            self.mgr.host,
+            ).AndReturn([self.instance])
+
+        self.mox.ReplayAll()
+        # Invoke the periodic tasks to call the pollsters.
+        self.mgr.periodic_tasks(None)
 
     def test_message(self):
-        assert self.Pollster.counters[0][1] is self.ctx
+        assert self.Pollster.counters[0][1] is self.instance
 
-    def test_notify(self):
-        assert len(self.notifications) == 2
-
-    def test_notify_topics(self):
-        topics = [n[0] for n in self.notifications]
-        assert topics == ['metering', 'metering.test']
-
-#    def test_load_plugins(self):
-#        mgr = manager.AgentManager()
-#        mgr._load_plugins()
-#        assert len(mgr.pollsters) == 3
-#
-#    def test_load_data_processors(self):
-#        mgr = manager.AgentManager()
-#        mgr._load_data_processors()
-#        assert len(mgr.processors) == 2
-#
-#    def test_hook_data_processors_with_pollsters_and_publishers(self):
-#        mgr = manager.AgentManager()
-#        mgr._load_plugins()
-#        mgr._load_data_processors()
-#
-#        mgr._hook_data_processors_with_plugins_and_publishers()
-#
-#        for name, processor in mgr.processors:
-#            assert len(processor.pollsters) == len(mgr.pollsters), "Missing pollsters in %s. Current %d, expected 3" % (name, len(processor.pollsters))
-
+    def test_notifications(self):
+        assert self.notifications[0] is self.Pollster.test_data
+        assert len(self.notifications) == 1
