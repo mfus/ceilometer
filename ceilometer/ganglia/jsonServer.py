@@ -1,8 +1,6 @@
 
-from ceilometer import log
+from ceilometer.openstack.common import log
 from jsonrpc2_zeromq import RPCNotificationServer
-
-#from jsonrpc2_zeromq import RPCNotifierClient
 
 
 LOG = log.getLogger(__name__)

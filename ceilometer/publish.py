@@ -17,7 +17,6 @@
 # under the License.
 """Publish a counter using the preferred RPC mechanism.
 """
-
 from ceilometer.openstack.common import log
 from ceilometer.openstack.common import rpc
 from ceilometer.openstack.common import cfg
@@ -44,13 +43,3 @@ def publish_counter(context, counter):
              cfg.CONF.metering_topic + '.' + counter.name,
              msg)
 
-
-class PublisherBase(object):
-    """Base class for plugins that support publishing data to external resource ex. Queue."""
-
-    __metaclass__ = abc.ABCMeta
-
-    @abc.abstractmethod
-    def publish_data(self, counter):
-        """Takes and processes metering data. It could publish it to external stream, write to file,
-        pass it to local daemon."""

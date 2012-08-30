@@ -31,13 +31,9 @@ PLUGIN_NAMESPACE = 'ceilometer.poll.central'
 class AgentManager(manager.Manager):
 
     pollsters = []
-    publishers = []
-    monitors = []
 
     def init_host(self):
         self._load_plugins()
-        self._load_monitors()
-        self._hook_monitors_with_plugins()
         return
 
     def _load_plugins(self):
@@ -62,38 +58,6 @@ class AgentManager(manager.Manager):
             LOG.warning('Failed to load any pollsters for %s',
                         PLUGIN_NAMESPACE)
         return
-
-    def _load_monitors(self):
-        """Loads data processors - objects which are processing metering data locally.
-
-            These objects control messages flow and for example send them through queue.
-        """
-
-        self.monitors = []
-        for ep in pkg_resources.iter_entry_points(MONITOR_PLUGIN_NAMESPACE):
-            LOG.info('attempting to load metering monitor %s:%s', MONITOR_PLUGIN_NAMESPACE, ep.name)
-            try:
-                processor_plugin_class = ep.load()
-                processor_plugin = processor_plugin_class()
-
-                self.monitors.append((ep.name, processor_plugin))
-            except Exception as err:
-                LOG.warning('Failed to load monitor %s:%s',
-                    ep.name, err)
-
-        if not self.monitors:
-            LOG.warning('Failed to load any monitor for %s',
-                MONITOR_PLUGIN_NAMESPACE)
-        return
-
-    def _hook_monitors_with_plugins(self):
-        """Hooks objects which are processing metering data
-            with plugins (local metering data collectors)
-            and publishers (objects which are publishing data to external sources)."""
-
-        for name, monitor in self.monitors:
-            monitor.set_pollsters(self.pollsters)
-            LOG.debug("Passed pollsters to monitor:%s" , name)
 
     def periodic_tasks(self, context, raise_on_error=False):
         """Tasks to be run at a periodic interval."""

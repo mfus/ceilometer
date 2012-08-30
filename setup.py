@@ -56,6 +56,9 @@ setuptools.setup(
     [ceilometer.storage]
     log = ceilometer.storage.impl_log:LogStorage
     mongodb = ceilometer.storage.impl_mongodb:MongoDBStorage
+
+    [ceilometer.ganglia]
+    cpumeter = ceilometer.compute.realtimedata:CpuMeter
     """),
     )
 
