@@ -40,13 +40,27 @@ class GangliaManager(manager.Manager):
     handlers = {}
 
     def init_host(self):
+
+	LOG.info("Attepmt to create JsonServer")
+
         connection_string = "tcp://127.0.0.1:90000" #TODO move to confguration file
-
         self.receiver = JsonServer(connection_string)
+	self.receiver.start()
         self.receiver.handle_update_stats_method = self.received_stats_event
-        self._create_connection()
-        self.__rulesManager = rulesmanager.RulesManager()
+	
+	LOG.info("Created jsonServer")
 
+        self._create_connection()
+
+	LOG.info("Established connection")	
+
+        self.__rulesManager = rulesmanager.RulesManager()
+	
+	LOG.info("Attept to load plugins")
+
+	self._load_plugins()
+
+	LOG.info("Plugins loaded")
 
     def _load_plugins(self):
         # Listen for notifications from nova
