@@ -121,7 +121,7 @@ class GangliaManager(manager.Manager):
 
         LOG.info('NOTIFICATION: %s', event_type)
         for handler in self.handlers.get(event_type, []):
-            for c in handler.process_notification(data):
+            for c in handler.process_notification(r):
                 if self.__rulesManager.validateAgainstRules(c) != rulesmanager.Valid:
                     LOG.info('READING: %s', c)
                     self._publish_reading(c)
