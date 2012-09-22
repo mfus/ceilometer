@@ -41,26 +41,26 @@ class GangliaManager(manager.Manager):
 
     def init_host(self):
 
-	LOG.info("Attepmt to create JsonServer")
+        LOG.info("Attepmt to create JsonServer")
 
         connection_string = "tcp://127.0.0.1:90000" #TODO move to confguration file
         self.receiver = JsonServer(connection_string)
-	self.receiver.start()
+        self.receiver.start()
         self.receiver.handle_update_stats_method = self.received_stats_event
 	
-	LOG.info("Created jsonServer")
+        LOG.info("Created jsonServer")
 
         self._create_connection()
 
-	LOG.info("Established connection")	
+        LOG.info("Established connection")
 
         self.__rulesManager = rulesmanager.RulesManager()
 	
-	LOG.info("Attept to load plugins")
+        LOG.info("Attept to load plugins")
 
-	self._load_plugins()
+        self._load_plugins()
 
-	LOG.info("Plugins loaded")
+        LOG.info("Plugins loaded")
 
     def _load_plugins(self):
         # Listen for notifications from nova
@@ -104,7 +104,8 @@ class GangliaManager(manager.Manager):
     def _publish_reading(self, reading):
         LOG.info(self.health_rpc_api.topic)
         try:
-            result = self.health_rpc_api.raise_alert(self.ctx, alert={ "Severity" :  reading.Alert, "Value" : reading })
+            alert = reading.resource_metadata['alert']
+            result = self.health_rpc_api.raise_alert(self.ctx, alert={ "severity" :  alert, "value" : reading })
         except Exception as err:
             LOG.error("%s" % err)
         LOG.info("sent")
@@ -123,7 +124,6 @@ class GangliaManager(manager.Manager):
         for handler in self.handlers.get(event_type, []):
             for c in handler.process_notification(r):
                 if self.__rulesManager.validateAgainstRules(c) != rulesmanager.Valid:
-                    LOG.info('READING: %s', c)
                     self._publish_reading(c)
         return
 

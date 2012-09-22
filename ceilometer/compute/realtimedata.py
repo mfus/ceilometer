@@ -17,10 +17,14 @@ class RealTimeData(NotificationBase):
                 type=reading.EventType,
                 volume=reading.Value,
                 timestamp=reading.Time,
+                user_id=None,
+                project_id=None,
+                resource_id=None,
+                duration=None,
                 resource_metadata={
                     'display_name': reading.EventType + ': ' + reading.ClusterName + '[' + reading.InstanceName + ']',
                     'instance_type': reading.InstanceName,
-                    'host': reading.ClusterName,
+                    'host': reading.HostName,
                     'event_type': reading.EventType,
                     'value': reading.Value,
                     'units': reading.Units
@@ -72,5 +76,12 @@ class CpuMeter(RealTimeData):
                 message.MetricName = 'pkts'
                 message.Value = message.Value + self._pkts_out[message.HostName]
 
-        return message
+        try:
+            counter = [self.createCounterFromReading(message),]
+            return counter
+
+        except Exception as err:
+            print "%s" % err
+
+
 

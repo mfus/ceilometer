@@ -1,13 +1,20 @@
-Valid, Warning, Error, Fatal = range(4)
+Valid, UpperBound, LowerBound = range(3)
 
 class RulesManager(object):
 
-    def validateAgainstRules(self, reading):
+    def validateAgainstRules(self, message):
 
-        if reading.Value > 70 or reading.Value < 40:
-            reading.Alert = Error
+        print "RulesManager %s" % message.resource_metadata
+        value = message.resource_metadata['value']
+        print value
+
+
+        if value > 70:
+            message.resource_metadata['alert'] = UpperBound
+        elif value < 40:
+            message.resource_metadata['alert'] = LowerBound
         else:
-            reading.Alert = Valid
+            message.resource_metadata['alert'] = Valid
 
-        return reading.Alert
+        return message.resource_metadata['alert']
 
