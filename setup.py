@@ -35,7 +35,8 @@ setuptools.setup(
     scripts=['bin/ceilometer-agent-compute',
              'bin/ceilometer-agent-central',
              'bin/ceilometer-collector',
-             'bin/health-monitor-node.py'],
+             'bin/health-monitor-node.py',
+	     'bin/ceilometer-ganglia.py'],
     py_modules=[],
     entry_points=textwrap.dedent("""
     [ceilometer.collector.compute]

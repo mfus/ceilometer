@@ -1,4 +1,3 @@
-
 from ceilometer.openstack.common import log
 from jsonrpc2_zeromq import RPCNotificationServer
 
