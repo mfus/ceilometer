@@ -78,19 +78,29 @@ class Reading(object):
         else:
             return 'host.' + self.MetricName
 
+
+    def setUnits(self, value):
+        self.__units = value
+
+    def setValue(self, value):
+        self.__value = value
+
+    def setMetricName(self, value):
+        self.__metricName = value
+
     Alert = property(getAlert, setAlert, doc='Alert')
 
     ClusterName = property(getClusterName, doc='ClusterName')
 
     HostName = property(getHostName, doc='HostName')
 
-    Value = property(getValue, doc='Value')
+    Value = property(getValue, setValue, doc='Value')
 
     Time = property(getTime, doc='Time')
 
-    Units = property(getUnits, doc='Units')
+    Units = property(getUnits, setUnits, doc='Units')
 
-    MetricName = property(getMetricName, doc='MetricName')
+    MetricName = property(getMetricName, setMetricName, doc='MetricName')
 
     InstanceName = property(getInstanceName, doc='InstanceName')
 
