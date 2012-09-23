@@ -102,8 +102,24 @@ class Connection(object):
 
     @abc.abstractmethod
     def get_volume_sum(self, event_filter):
-        """Return the sum of the volume field for the events
+        """Return the sum of the volumReturn the sum of the volume field for the events
         described by the query parameters.
+
+        The filter must have a meter value set.
+
+        { 'resource_id': UUID string for the resource,
+          'value': The sum for the volume.
+          }
+        e field for the events
+        described by the query parameteReturn the sum of the volume field for the events
+        described by the query parameters.
+
+        The filter must have a meter value set.
+
+        { 'resource_id': UUID string for the resource,
+          'value': The sum for the volume.
+          }
+        rs.
 
         The filter must have a meter value set.
 

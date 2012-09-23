@@ -1,5 +1,6 @@
 __author__ = 'Michal Fus'
 
+import string
 from ceilometer.ganglia import rulesmanager
 
 class Reading(object):
@@ -8,6 +9,9 @@ class Reading(object):
     def __init__(self, data):
         self.__clusterName = data.get('clusterName', 'undefined')
         self.__hostName = data.get('host', 'undefined')
+
+        self.__hostName = string.split(self.__hostName,"/")[1]
+
         self.__value = data.get('value', 'undefined')
         self.__time = data.get('time', 'undefined')
         self.__units = data.get('units', 'undefined')

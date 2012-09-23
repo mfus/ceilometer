@@ -11,8 +11,8 @@ class RulesManager(object):
 
         if value > 70:
             message.resource_metadata['alert'] = UpperBound
-        elif value < 40:
-            message.resource_metadata['alert'] = LowerBound
+        #elif value < 40:
+        #    message.resource_metadata['alert'] = LowerBound
         else:
             message.resource_metadata['alert'] = Valid
 
