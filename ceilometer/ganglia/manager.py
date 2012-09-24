@@ -108,7 +108,8 @@ class GangliaManager(manager.Manager):
             result = self.health_rpc_api.raise_alert(self.ctx, alert={ "severity" :  alert, "value" : reading })
         except Exception as err:
             LOG.error("%s" % err)
-        LOG.info("sent")
+
+        LOG.info("sending %s %s" % (alert, reading))
         pass
 
 

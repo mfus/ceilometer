@@ -1,4 +1,8 @@
+from ceilometer.openstack.common import log
+
 Valid, UpperBound, LowerBound = range(3)
+LOG = log.getLogger(__name__)
+
 
 class RulesManager(object):
 
@@ -11,8 +15,8 @@ class RulesManager(object):
 
         if value > 70:
             message.resource_metadata['alert'] = UpperBound
-        #elif value < 40:
-        #    message.resource_metadata['alert'] = LowerBound
+        elif value < 40:
+            message.resource_metadata['alert'] = LowerBound
         else:
             message.resource_metadata['alert'] = Valid
 

@@ -88,7 +88,6 @@ class MemMeter(RealTimeData):
                     message.Value = (1.0 - (float(message.Value) / self._mem_total[message.HostName])) * 100.0
                     message.Units = '%'
 
-
                     counter = [self.createCounterFromReading(message),]
                     return counter
                 except Exception as err:
@@ -113,6 +112,13 @@ class NetMeter(RealTimeData):
                 try:
                     message.MetricName = 'pkts'
                     message.Value = (float(message.Value) + self._pkts_out[message.HostName]) * 500 / 10485760 * 100
+
+                    print "%s %s %s %s" % (
+                        float(message.Value) + self._pkts_out[message.HostName],
+                        (float(message.Value) + self._pkts_out[message.HostName]) * 500,
+                        (float(message.Value) + self._pkts_out[message.HostName]) * 500 / 10485760,
+                        (float(message.Value) + self._pkts_out[message.HostName]) * 500 / 10485760 * 100
+                    )
 
                     counter = [self.createCounterFromReading(message),]
 

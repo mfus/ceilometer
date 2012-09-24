@@ -60,6 +60,9 @@ setuptools.setup(
 
     [ceilometer.ganglia]
     cpumeter = ceilometer.compute.realtimedata:CpuMeter
+    memmeter = ceilometer.compute.realtimedata:MemMeter
+    netmeter = ceilometer.compute.realtimedata:NetMeter
+
     """),
     )
 
